@@ -1,7 +1,5 @@
 window.onload = function () {
     // variables
-    var p1;
-    var p2;
     var config = {
         apiKey: "AIzaSyA9G4iGYLiJLZ1yyAwVi9qUCt2503oGsrE",
         authDomain: "scw-multiplayer.firebaseapp.com",
@@ -12,15 +10,26 @@ window.onload = function () {
     };
     firebase.initializeApp(config);
     var database = firebase.database()
+    //enter name and set fb objects for name wins, losses, choice
+    $("#strtbtn").on("click", function () {
+        event.preventDefault();
+        database.ref().child("players")
+        // database.ref("players").child("player1")
+        database.ref("player1").update({
+            name: $("#name").val(),
+            wins: 0,
+            losses: 0
+        })
+        $("#name").val("")
+    })
     // player one makes Selection display their selection on their screen only
     $(".choice").on("click", function () {
-        p1 = $(this).text();
-        console.log($(this).text())
-        database.ref().set({
-            player1: p1,
+        database.ref("player1").child("choice")
+        database.ref("choice").update({
+        choice: $(this).text()
         })
-
     })
+}
     // player two makes selection display their selection on their screen only
 
     //compare results and post winner in results pane
@@ -30,4 +39,3 @@ window.onload = function () {
     //return message from server and append to chat pane
 
     //
-}
