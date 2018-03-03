@@ -33,19 +33,28 @@ window.onload = function () {
             player2 = null;
         }
         if (player1 && player2) {
-            database.ref().update({
-                turn: turn
-            });
+            // database.ref().update({
+            //     turn: turn
+            // });
         }
         if (p1choice && p2choice) {
             winner()
         }
     });
 
+    //Listens to the turn key to change them locally
+    database.ref("turn").on("value", function (snapshot) {
+        if (snapshot.val() === 1) {
+            turn = 1;
+        } else if (snapshot.val() === 2) {
+            turn = 2;
+        }
+    });
+
     //enter name and set fb objects for name wins, losses, choice
     $("#strtbtn").on("click", function () {
         event.preventDefault();
-        //Determines if the is already a player or not and sets flags. 
+        //Determines if there is already a player or not and sets flags. 
         if ($("#name").val() !== "" && !(player1 && player2)) {
             if (player1 === null) {
                 database.ref("players/p1").set({
@@ -62,6 +71,7 @@ window.onload = function () {
                     losses: p2losses
                 });
                 player = "p2";
+                database.ref().child("turn").set(1)
                 database.ref("players/p2").onDisconnect().remove()
             }
         }
@@ -76,6 +86,7 @@ window.onload = function () {
                 choice: $(this).text().toLowerCase()
             });
             p1choice = $(this).text().toLowerCase();
+            database.ref().child("/turn").set(2);
             //display choice in pane 1
             //display "waiting" in pane 2
         } else if (turn === 2 && player === "p2") {
@@ -83,19 +94,26 @@ window.onload = function () {
                 choice: $(this).text().toLowerCase()
             });
             p2choice = $(this).text().toLowerCase();
+            database.ref().child("/turn").set(1);
+            winner()
             //display choice in pane 1 and 2
             //run comparing function
         }
     })
-}
-//player two makes selection display their selection on their screen only
 
-//compare results and post winner in results pane
-function winner() {
-    alert("You made it to the winner function!!!")
-}
+
+    $("#clear").on("click", function () {
+        database.ref().remove()
+    })
+    //player two makes selection display their selection on their screen only
+
+    //compare results and post winner in results pane
+    function winner() {
+        console.log("you made it to the winner function !!!")
+    }
     //sumbit message to server
 
     //return message from server and append to chat pane
 
     //
+}
