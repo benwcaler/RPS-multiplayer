@@ -1,33 +1,55 @@
 window.onload = function () {
     // variables
-    var config = {
+    var player = "p1";
+    var p1wins = 0;
+    var p2wins = 0;
+    var p1losses = 0;
+    var p2losses = 0;
+
+    firebase.initializeApp({
         apiKey: "AIzaSyA9G4iGYLiJLZ1yyAwVi9qUCt2503oGsrE",
         authDomain: "scw-multiplayer.firebaseapp.com",
         databaseURL: "https://scw-multiplayer.firebaseio.com",
         projectId: "scw-multiplayer",
         storageBucket: "scw-multiplayer.appspot.com",
         messagingSenderId: "879503526930"
-    };
-    firebase.initializeApp(config);
-    var database = firebase.database()
+    });
+    var database = firebase.database();
+
+    database.ref().once("child_added", function (snapshot) {
+        if (snapshot.hasChild("p1") && !snapshot.hasChild("p2")) {
+            player = "p2";
+        }
+        console.log(player)
+    });
+
     //enter name and set fb objects for name wins, losses, choice
     $("#strtbtn").on("click", function () {
         event.preventDefault();
-        database.ref().child("players")
-        // database.ref("players").child("player1")
-        database.ref("player1").update({
-            name: $("#name").val(),
-            wins: 0,
-            losses: 0
-        })
-        $("#name").val("")
+        //Determines if the is already a player or not and sets flags. 
+
+        if (player === "p1") {
+            database.ref("players/" + player).set({
+                name: $("#name").val(),
+                wins: p1wins,
+                losses: p1losses
+            });
+        } else if (player === "p2") {
+            database.ref("players/" + player).set({
+                name: $("#name").val(),
+                wins: p2wins,
+                losses: p2losses
+            });
+        }
+        
+        $("#name").val("");
     })
     // player one makes Selection display their selection on their screen only
     $(".choice").on("click", function () {
-        database.ref("player1").child("choice")
-        database.ref("choice").update({
-        choice: $(this).text()
+        database.ref("players/" + player).update({
+            choice: $(this).text().toLowerCase()
         })
+        
     })
 }
     // player two makes selection display their selection on their screen only
