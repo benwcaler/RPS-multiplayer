@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <script src="assets/javascript/app.js"></script>
     <title>Stone Cloak Wand</title>
 </head>
@@ -20,20 +21,33 @@
             <div>
                 <input id="name" type="text" placeholder="Name" autocomplete="off">
             </div>
-            <button id="strtbtn" type="submit">Start</button>
+            <button class="box" id="strtbtn" type="submit">Start</button>
         </form>
-        <div id="localP">
+        <div id="choices">
             <span class="choice" value="stone">Stone</span>
             <br>
             <span class="choice" value="cloak">Cloak</span>
             <br>
             <span class="choice" value="wand">Wand</span>
         </div>
+        <div id="p1"></div>
         <div id="result"></div>
-        <div id="remoteP"></div>
-        <div id="chatbox"></div>
+        <div id="p2"></div>
         <div id="message"></div>
-        <button id="clear">Clear DB</button>
+        <div id="winner"></div>
+        <div id="p1stats">
+            <div id="p1wins"></div>
+            <div id="p1losses"></div>
+        </div>
+        <div id="p2stats">
+            <div id="p2wins"></div>
+            <div id="p2losses"></div>
+        </div>
+        <div id="chatbox"></div>
+        <form name="message">
+            <input name="msg" type="text" id="msg" size="70" autocomplete="off"/>
+            <input name="submit" type="submit" id="submit" value="Send"/>
+        </form>
     </div>
 </body>
 
