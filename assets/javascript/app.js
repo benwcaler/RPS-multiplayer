@@ -43,9 +43,12 @@ window.onload = function () {
             winner()
         }
     });
-database.ref("players").on("child_removed", function (snapshot) {
-    database.ref("chat").remove();
-})
+    database.ref("players").on("child_removed", function (snapshot) {
+        database.ref("chat").remove();
+        var msg = snapshot.val().name + " has disconnected!";
+        var chatKey = database.ref().child("/chat/").push().key;
+        database.ref("/chat/" + chatKey).set(msg);
+    })
     //Listens to the turn key to change them locally
     database.ref("turn").on("value", function (snapshot) {
         if (snapshot.val() === 1) {
@@ -65,9 +68,33 @@ database.ref("players").on("child_removed", function (snapshot) {
     });
 
     database.ref("/chat/").on("child_added", function (snapshot) {
-        var msg = $("<div>").html("[" + moment().format("hh:mm:ss") + "] " + snapshot.val());
-        $("#chatbox").append(msg);
-        // $("#chatDisplay").scrollTop($("#chatDisplay")[0].scrollHeight);
+        var msg = snapshot.val();
+        var chatEntry = $("<p>").html("[" + moment().format("hh:mm:ss") + "] " + msg);
+        if (player === "p1") {
+            if (msg.includes("disconnected")) {
+                chatEntry.addClass("dcd");
+            } else if (msg.startsWith(player1)) {
+                chatEntry.addClass("localChat");
+            } else if (msg.includes("joined")) {
+                chatEntry.css("color", "green");
+            } else {
+                chatEntry.addClass("remoteChat");
+            }
+            $("#chatbox").append(chatEntry);
+            $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        } else if (player === "p2") {
+            if (msg.includes("disconnected")) {
+                chatEntry.addClass("dcd");
+            } else if (msg.startsWith(player2)) {
+                chatEntry.addClass("localChat");
+            } else if (msg.includes("joined")) {
+                chatEntry.css("color", "green");
+            } else {
+                chatEntry.addClass("remoteChat");
+            }
+            $("#chatbox").append(chatEntry);
+            $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        }
     });
 
     //enter name and set firebase objects for name wins, losses, choice
@@ -81,7 +108,7 @@ database.ref("players").on("child_removed", function (snapshot) {
                     wins: p1wins,
                     losses: p1losses
                 });
-                player = $("#name").val();
+                player = "p1";
                 database.ref("players/p1").onDisconnect().remove()
             } else if (player1 !== null && player2 === null) {
                 database.ref("players/p2").set({
@@ -89,11 +116,14 @@ database.ref("players").on("child_removed", function (snapshot) {
                     wins: p2wins,
                     losses: p2losses
                 });
-                player = $("#name").val();
+                player = "p2";
                 database.ref().child("turn").set(1);
                 database.ref("players/p2").onDisconnect().remove();
                 $("#p1").text("Waiting on " + player1)
             }
+            var msg = $("#name").val().trim() + " has joined!";
+            var chatKey = database.ref().child("chat").push().key;
+            database.ref("/chat/" + chatKey).set(msg);
         }
         $("#name").val("");
     })
@@ -168,12 +198,28 @@ database.ref("players").on("child_removed", function (snapshot) {
     //sumbit message to server
     $("#submit").on("click", function () {
         event.preventDefault()
-        if ((player !== "") && ($("#msg").val().trim() !== "")) {
-            var msg = player + ": " + $("#msg").val().trim();
-            $("#msg").val("");
-            var chatKey = database.ref().child("/chat/").push().key;
-            database.ref("/chat/" + chatKey).set(msg);
+        if (player === "p1") {
+            if ((player1 !== undefined) && ($("#msg").val().trim() !== "")) {
+                var msg = player1 + ": " + $("#msg").val().trim();
+                $("#msg").val("");
+                var chatKey = database.ref().child("/chat/").push().key;
+                database.ref("/chat/" + chatKey).set(msg);
+            } else if (player1 === undefined) {
+                $("#error").text("Please enter your name to begin");
+            } else if ($("#msg").val() === "") {
+                $("#error").text("Please enter your message");
+            }
+        } else if (player === "p2") {
+            if ((player2 !== undefined) && ($("#msg").val().trim() !== "")) {
+                var msg = player2 + ": " + $("#msg").val().trim();
+                $("#msg").val("");
+                var chatKey = database.ref().child("/chat/").push().key;
+                database.ref("/chat/" + chatKey).set(msg);
+            } else if (player2 === undefined) {
+                $("#error").text("Please enter your name to begin");
+            } else if ($("#msg").val() === "") {
+                $("#error").text("Please enter your message");
+            }
         }
     })
-    //
 }
