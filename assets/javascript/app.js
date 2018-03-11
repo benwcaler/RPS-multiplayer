@@ -194,6 +194,7 @@ window.onload = function () {
         $("#p1").empty();
         $("#p2").empty();
         $("#p1").text("Waiting on " + player1)
+    //TODO - Bug somewhere around here that is populating waiting on player one in the player one box. and doesn't remove previous game's winner when player 1 makes second choice
     }
     //sumbit message to server
     $("#submit").on("click", function () {
