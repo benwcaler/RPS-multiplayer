@@ -23,15 +23,17 @@ body {
 #players {
     display: grid;
     grid-template-columns: repeat (3, 1fr);
+    grid-template-rows: 1fr;
     margin: 20px 0;
     border: 1px solid black;
+    justify-items: center;
+    align-items: center;
 }
 
 #choices {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     margin: 20px 0;
-    border: 1px solid black;
     font-size: 35px;
     vertical-align: middle;
 }
