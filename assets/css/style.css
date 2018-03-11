@@ -1,23 +1,67 @@
+body {
+    width: 60%;
+    margin: auto;
+    background-color: #444;
+    font-family: fantasy;
+    color: gold;
+}
+
+#header {
+    text-align: center;
+    font-size: 60px;
+    margin: 25px;
+}
+
+#container {
+    display: grid;
+    grid-template-rows: 20px 200px 100px 400px;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    text-align: center;
+}
+
+#players {
+    display: grid;
+    grid-template-columns: repeat (3, 1fr);
+    margin: 20px 0;
+    border: 1px solid black;
+}
+
+#choices {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 20px 0;
+    border: 1px solid black;
+    font-size: 35px;
+    vertical-align: middle;
+}
+
+
+
 #chatbox {
-    height: 100px;
-    width: 300px;
+    height: 200px;
+    width: 500px;
     overflow: auto;
     margin: auto;
     border: 2px solid black;
 }
 
+#cht {
+    margin: 10px;
+}
+
 .dcd {
-    color: red;
+    color: pink;
 }
 
 .joined {
-    color: green;
+    color: lightgreen;
 }
 
 .localChat {
-    color: blue;
+    color: lightblue;
 }
 
 .remoteChat {
-    color: purple;
+    color: orange;
 }

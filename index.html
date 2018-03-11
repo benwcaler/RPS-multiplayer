@@ -15,14 +15,37 @@
 </head>
 
 <body>
-    <div id="header"></div>
+    <div id="header">The Deathly Hallows</div>
     <div id="container">
-        <form>
-            <div>
-                <input id="name" type="text" placeholder="Name" autocomplete="off">
+        <div id="input">
+            <form>
+                <div>
+                    <input id="name" type="text" placeholder="Name" autocomplete="off">
+                </div>
+                <button class="box" id="strtbtn" type="submit">Start</button>
+            </form>
+        </div>
+        <div id="players">
+            <div id="player1">
+                <div id="p1"></div>
+                <div id="p1stats">
+                    <div id="p1wins"></div>
+                    <div id="p1losses"></div>
+                </div>
             </div>
-            <button class="box" id="strtbtn" type="submit">Start</button>
-        </form>
+            <div id="info">
+                <div id="result"></div>
+                <div id="message"></div>
+                <div id="winner"></div>
+            </div>
+            <div id="player2">
+                <div id="p2"></div>
+                <div id="p2stats">
+                    <div id="p2wins"></div>
+                    <div id="p2losses"></div>
+                </div>
+            </div>
+        </div>
         <div id="choices">
             <span class="choice" value="stone">Stone</span>
             <br>
@@ -30,25 +53,14 @@
             <br>
             <span class="choice" value="wand">Wand</span>
         </div>
-        <div id="p1"></div>
-        <div id="result"></div>
-        <div id="p2"></div>
-        <div id="message"></div>
-        <div id="winner"></div>
-        <div id="p1stats">
-            <div id="p1wins"></div>
-            <div id="p1losses"></div>
+        <div id="chat">
+            <div id="chatbox"></div>
+            <form name="message" id="cht">
+                <input name="msg" type="text" id="msg" size="70" autocomplete="off" />
+                <input name="submit" type="submit" id="submit" value="Send" />
+            </form>
+            <div id="error"></div>
         </div>
-        <div id="p2stats">
-            <div id="p2wins"></div>
-            <div id="p2losses"></div>
-        </div>
-        <div id="chatbox"></div>
-        <form name="message">
-            <input name="msg" type="text" id="msg" size="70" autocomplete="off"/>
-            <input name="submit" type="submit" id="submit" value="Send"/>
-        </form>
-        <div id="error"></div>
     </div>
 </body>
 
